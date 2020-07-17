@@ -8,13 +8,19 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,ScreenRecordingDetectorDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(onDidStartRecording), name: .didStartRecording, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidStopRecording), name: .didStopRecording, object: nil)
+        
+        ScreenRecordingDetector.shared.delegate = self
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ScreenRecordingDetector.shared.checkStatus()
     }
     @objc
     func onDidStartRecording() {
@@ -23,6 +29,19 @@ class ViewController: UIViewController {
     @objc
     func onDidStopRecording() {
         self.view.backgroundColor = UIColor.green
+        
+    }
+    
+    func didStartRecording() -> Void{
+        
+        onDidStartRecording()
+    }
+    func didStopRecording() -> Void{
+        onDidStopRecording()
+        
+    }
+    func recordingStatusCahnged() -> Void{
+        
     }
 }
 
